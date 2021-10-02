@@ -6,6 +6,7 @@ class Book extends Component {
         return (
             <>
                 <BookRender 
+                     showUpdateBookForm={this.props.showUpdateBookForm}
                     deleteBookFun={this.props.deleteBookFun} 
                     key={this.props.index}
                     title={this.props.Book_Data.title} 

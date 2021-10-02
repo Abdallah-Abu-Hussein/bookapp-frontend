@@ -9,6 +9,9 @@ class BookRender extends Component {
     deleteBookHandler = () => {
         this.props.deleteBookFun(this.props.id)
     }
+    updateBookHandler = () => {
+        this.props.showUpdateBookForm(this.props.booksData)
+    }
 
     render() {
         return (
@@ -23,6 +26,9 @@ class BookRender extends Component {
                         <Card.Text>Email: {this.props.email}</Card.Text>
                         <Button onClick={this.deleteBookHandler}>
                             Delete! ❌
+                        </Button>
+                        <Button onClick={this.updateBookHandler}>
+                            Update! ✍️
                         </Button>
                     </Card.Body>
                 </Card>

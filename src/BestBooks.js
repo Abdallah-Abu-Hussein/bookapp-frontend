@@ -5,6 +5,7 @@ import './BestBooks.css';
 import axios from 'axios';
 import Book from './Component/Book';
 import BookForm from './Component/Form';
+import UpdateBook from './Component/UpdateBook';
 import { withAuth0 } from '@auth0/auth0-react';
 
 class MyFavoriteBooks extends React.Component {
@@ -14,6 +15,9 @@ class MyFavoriteBooks extends React.Component {
     this.state = {
     Book_Data: [],
       searchQuery: '',
+      showUpdateForm: false,
+      bookInfoUpdate: {}
+
     }
   }
 
@@ -57,6 +61,33 @@ class MyFavoriteBooks extends React.Component {
     })
 
   }
+  updateBook = async (e) => {
+    e.preventDefault();
+
+    let bookFormUpdateInfo = {
+      title: e.target.title.value,
+      author: e.target.author.value,
+      description: e.target.description.value,
+      status: e.target.status.value,
+      email: this.props.auth0.user.email,
+      id: this.state.bookInfoUpdate._id
+    }
+  
+    let updateData = await axios.put(`${process.env.REACT_APP_SERVER}/updateBook`, bookFormUpdateInfo);
+    
+    this.setState({
+      Book_Data: updateData.data
+    })
+  }
+
+  showUpdateBookForm = async (bookInfo) => {
+
+    await this.setState({
+      showUpdateForm: true,
+      bookInfoUpdate: bookInfo
+    })
+
+  }
 
   render() {
     return (
@@ -76,6 +107,11 @@ class MyFavoriteBooks extends React.Component {
                      />
                 )
               })}
+              {this.state.showUpdateForm &&
+                <UpdateBook
+                  bookInfo={this.state.bookInfoUpdate}
+                  updateBook={this.updateBook}
+                />}
               
             </Card.Text>
           </Card.Body>
