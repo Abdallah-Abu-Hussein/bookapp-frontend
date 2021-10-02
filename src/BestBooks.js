@@ -4,6 +4,8 @@ import Card from 'react-bootstrap/Card'
 import './BestBooks.css';
 import axios from 'axios';
 import Book from './Component/Book';
+import BookForm from './Component/Form';
+import UpdateBook from './Component/UpdateBook';
 import { withAuth0 } from '@auth0/auth0-react';
 
 class MyFavoriteBooks extends React.Component {
@@ -11,36 +13,106 @@ class MyFavoriteBooks extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      booksData: [],
-      searchQuery: ''
+    Book_Data: [],
+      searchQuery: '',
+      showUpdateForm: false,
+      bookInfoUpdate: {}
+
     }
   }
 
   componentDidMount = async () => {
 
-    let email = this.props.auth0.user.email;
+    let email = this.props.auth0.user.email
 
-    let bookUrl = `http://localhost:3001/book?email=${email}`;//use abdallh11332244666@gmail.com to test
-    let bData = await axios.get(bookUrl);
-    console.log("welcome home ");
-    console.log(bData);
+    let Url = `${process.env.REACT_APP_SERVER}/getBook?email=${email}`;
+
+    let Data2 = await axios.get(Url);
+
     this.setState({
-      booksData: bData.data
+    Book_Data: Data2.data
     })
   }
+
+  createBook = async (event) => {
+    event.preventDefault()
+    let bookFormInfo = {
+      title1: event.target.title.value,
+      author1: event.target.author.value,
+      description1: event.target.description.value,
+      status1: event.target.status.value,
+      email1: this.props.auth0.user.email
+    }
+    let createData = await axios.post(`${process.env.REACT_APP_SERVER}/createBook`, bookFormInfo);
+    this.setState({
+    Book_Data: createData.data
+    })
+
+  }
+
+  deleteBook = async (bookID) => {
+
+    let email = this.props.auth0.user.email
+
+    let deleteData = await axios.delete(`${process.env.REACT_APP_SERVER}/deleteBook?bookID=${bookID}&email=${email}`)
+
+    this.setState({
+    Book_Data: deleteData.data
+    })
+
+  }
+  updateBook = async (e) => {
+    e.preventDefault();
+
+    let bookFormUpdateInfo = {
+      title: e.target.title.value,
+      author: e.target.author.value,
+      description: e.target.description.value,
+      status: e.target.status.value,
+      email: this.props.auth0.user.email,
+      id: this.state.bookInfoUpdate._id
+    }
   
+    let updateData = await axios.put(`${process.env.REACT_APP_SERVER}/updateBook`, bookFormUpdateInfo);
+    
+    this.setState({
+      Book_Data: updateData.data
+    })
+  }
+
+  showUpdateBookForm = async (bookInfo) => {
+
+    await this.setState({
+      showUpdateForm: true,
+      bookInfoUpdate: bookInfo
+    })
+
+  }
+
   render() {
     return (
       <div>
-        <Card style={{ width: '30rem' }}>
+        <Card style={{ width: '80rem' }}>
           <Card.Body>
-            <Card.Title>My Fav Books</Card.Title>
+            <Card.Title>My Favoured Books</Card.Title>
             <Card.Text>
-              {this.state.booksData.map((element, index)=> {
+              <br />
+              <BookForm createBook={this.createBook} />
+              <br />
+              {this.state.Book_Data.map((ele, idx) => {
                 return (
-                  <Book booksData={element} index={index}/>
+                  <Book Book_Data={ele}
+                    idx={idx}
+                    deleteBookFun={this.deleteBook}
+                     />
                 )
               })}
+              {this.state.showUpdateForm &&
+                <UpdateBook
+                  bookInfo={this.state.bookInfoUpdate}
+                  updateBook={this.updateBook}
+                />}
+              
             </Card.Text>
           </Card.Body>
         </Card>

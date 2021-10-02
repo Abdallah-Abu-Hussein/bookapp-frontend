@@ -4,15 +4,19 @@ import BookRender from "./BookRender"
 class Book extends Component {
     render() {
         return (
-            <div>
-                <BookRender key={this.props.index} 
-                title={this.props.booksData.title} 
-                author={this.props.booksData.author}
-                description={this.props.booksData.description} 
-                status={this.props.booksData.status}
-                email={this.props.booksData.email} />
-            </div>
+            <>
+                <BookRender 
+                     showUpdateBookForm={this.props.showUpdateBookForm}
+                    deleteBookFun={this.props.deleteBookFun} 
+                    key={this.props.index}
+                    title={this.props.Book_Data.title} 
+                    author={this.props.Book_Data.author}
+                    description={this.props.Book_Data.description}
+                    status={this.props.Book_Data.status}
+                    email={this.props.Book_Data.email} 
+                    id={this.props.Book_Data._id}/>
+            </>
         )
     }
 }
-export default Book;
+export default Book
