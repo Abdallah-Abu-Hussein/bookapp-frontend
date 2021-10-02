@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import BookFormRender from "./FormRender"
+import FormRender from "./FormRender"
 
 class Book extends Component {
     render() {
         return (
-                <BookFormRender createBookFun={this.props.createBookFun} />
+                <FormRender createBook={this.props.createBook} />
         )
     }
 }

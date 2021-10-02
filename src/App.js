@@ -23,7 +23,7 @@ class App extends React.Component {
             <Header />
             <Switch>
               <Route exact path="/">
-              {this.props.auth0.isAuthenticated ? <><BestBooks />   <Image src="https://www.damngooddoormats.com/sites/damngooddoormats.indiemade.com/files/imagecache/im_clientsite_product_detail/welcome-i-hope-you-brought-snacks-funny-welcome-mat-housewarming-gift-damn-good-doormat_3.jpg?" thumbnail /></>: <Login /> }
+              {this.props.auth0.isAuthenticated ? <><BestBooks />   <Image src="https://www.damngooddoormats.com/sites/damngooddoormats.indiemade.com/files/imagecache/im_clientsite_product_detail/welcome-i-hope-you-brought-snacks-funny-welcome-mat-housewarming-gift-damn-good-doormat_3.jpg? " thumbnail /></>: <Login /> }
               </Route>
               <Route path="/profile" component={User}/>
             </Switch>
