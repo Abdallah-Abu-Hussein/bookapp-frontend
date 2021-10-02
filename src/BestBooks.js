@@ -21,11 +21,11 @@ class MyFavoriteBooks extends React.Component {
     let email = this.props.auth0.user.email;
 
     let bookUrl = `http://localhost:3001/book?email=${email}`;//use abdallh11332244666@gmail.com to test
-    let bData = await axios.get(bookUrl);
+    let data2 = await axios.get(bookUrl);
     console.log("welcome home ");
-    console.log(bData);
+    console.log(data2);
     this.setState({
-      booksData: bData.data
+      booksData: data2.data
     })
   }
   
